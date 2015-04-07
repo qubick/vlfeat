@@ -103,7 +103,7 @@ for i = 1:size(encoder.subdivisions,2)
   descrs = extendDescriptorsWithGeometry(encoder.geometricExtension, frames, descrs) ;
 
   switch encoder.type
-    case 'bovw'
+    case 'bovw' % ## CV PROJ
       [words,distances] = vl_kdtreequery(encoder.kdtree, encoder.words, ...
                                          descrs, ...
                                          'MaxComparisons', 100) ;
@@ -134,7 +134,7 @@ end
 psi = cat(1, psi{:}) ;
 
 % --------------------------------------------------------------------
-function psi = getFromCache(name, cache)
+function psi = getFromCache(name, cache) % ## CV PROJ is this what Gabe talked about in lecture today?
 % --------------------------------------------------------------------
 [drop, name] = fileparts(name) ;
 cachePath = fullfile(cache, [name '.mat']) ;

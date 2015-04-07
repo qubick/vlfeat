@@ -8,18 +8,18 @@ if ~exist('vl_version')
                '..', '..', 'toolbox', 'vl_setup.m')) ;
 end
 
-opts.dataset = 'caltech101' ;
+opts.dataset = 'caltech101' ; % kitti
 opts.prefix = 'bovw' ;
 opts.encoderParams = {'type', 'bovw'} ;
-opts.seed = 1 ;
+opts.seed = 1 ; % does this seed a prng?
 opts.lite = true ;
 opts.C = 1 ;
 opts.kernel = 'linear' ;
-opts.dataDir = 'data';
+opts.dataDir = 'data'; 
 for pass = 1:2
   opts.datasetDir = fullfile(opts.dataDir, opts.dataset) ;
   opts.resultDir = fullfile(opts.dataDir, opts.prefix) ;
-  opts.imdbPath = fullfile(opts.resultDir, 'imdb.mat') ;
+  opts.imdbPath = fullfile(opts.resultDir, 'imdb.mat') ; % do we need these? or are they in vlfeat somewhere
   opts.encoderPath = fullfile(opts.resultDir, 'encoder.mat') ;
   opts.modelPath = fullfile(opts.resultDir, 'model.mat') ;
   opts.diaryPath = fullfile(opts.resultDir, 'diary.txt') ;
@@ -52,7 +52,8 @@ else
                                              'variant', 'caltech101', 'seed', opts.seed) ;
    case 'caltech256', imdb = setupCaltech256(opts.datasetDir, 'lite', opts.lite) ;
    case 'voc07', imdb = setupVoc(opts.datasetDir, 'lite', opts.lite, 'edition', '2007') ;
-   case 'fmd', imdb = setupFMD(opts.datasetDir, 'lite', opts.lite) ;
+   case 'fmd', imdb = setupFMD(opts.datasetDir, 'lite', opts.lite) 
+       % ## CV PROJ add a case for KITTI?
    otherwise, error('Unknown dataset type.') ;
  end
  save(opts.imdbPath, '-struct', 'imdb') ;

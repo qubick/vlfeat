@@ -5,7 +5,7 @@ function encoder = trainEncoder(images, varargin)
 %
 %   TRAINENCODER(..., 'OPT', VAL, ...) accepts the following options:
 %
-%   Type:: 'bovw'
+%   Type:: 'bovw' ## CV PROJ
 %     Bag of visual words ('bovw'), VLAD ('vlad') or Fisher Vector
 %     ('fv').
 %
@@ -21,12 +21,12 @@ function encoder = trainEncoder(images, varargin)
 %     When using whitening, divide by s_max * WhiteningRegul + s_i
 %     instead of s_i alone.
 %
-%   Renormalize:: false
+%   Renormalize:: false 
 %     If true, descriptors are L2 normalized after PCA or
 %     whitening.
 %
 %
-%   Subdivisions:: []
+%   Subdivisions:: [] ## CV PROJ
 %     A list of spatial subdivisions. Each column is a rectangle
 %     [XMIN YMIN XMAX YMAX]. The spatial subdivisions are
 %
@@ -41,7 +41,8 @@ function encoder = trainEncoder(images, varargin)
 %   ReadImageFn:: @readImage
 %     The function used to load an image.
 %
-%   ExtractorFn:: @getDenseSIFT
+%   ExtractorFn:: @getDenseSIFT --> ## CV PROJ we could use HoG or whatever
+%   if SIFT isn't good enough, but this is already implemented
 %     The function used to extract the feature frames and
 %     descriptors from an image.
 
@@ -65,7 +66,7 @@ opts.layouts = {'1x1'} ;
 opts.geometricExtension = 'none' ;
 opts.subdivisions = zeros(4,0) ;
 opts.readImageFn = @readImage ;
-opts.extractorFn = @getDenseSIFT ;
+opts.extractorFn = @getDenseSIFT ; % ## CV PROJ we may want to change this but its fine for now
 opts.lite = false ;
 opts = vl_argparse(opts, varargin) ;
 
@@ -128,7 +129,7 @@ encoder.numWords = opts.numWords ;
 encoder.renormalize = opts.renormalize ;
 encoder.geometricExtension = opts.geometricExtension ;
 
-%% Step 0: obtain sample image descriptors
+%% Step 0: obtain sample image descriptors ## CV PROJ this will be done prior to us by the team working with the KITTI data right now I think
 numImages = numel(images) ;
 numDescrsPerImage = ceil(opts.numWords * opts.numSamplesPerWord / numImages) ;
 parfor i = 1:numImages

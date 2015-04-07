@@ -1,3 +1,5 @@
+% ## CV PROJ: adapt this to KITTI once we have the munged data frim the data group?
+
 function recognition_demo(varargin)
 % RECOGNITION_DEMO  Demonstrates using VLFeat for image classification
 

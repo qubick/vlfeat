@@ -5,7 +5,7 @@ function encoder = trainEncoder(images, varargin)
 %
 %   TRAINENCODER(..., 'OPT', VAL, ...) accepts the following options:
 %
-%   Type:: 'bovw' ## CV PROJ
+%   Type:: 'bovw' 
 %     Bag of visual words ('bovw'), VLAD ('vlad') or Fisher Vector
 %     ('fv').
 %
@@ -90,8 +90,8 @@ end
 
 if isempty(opts.numWords)
     switch opts.type
-      case {'bovw'}
-        opts.numWords = 1024 ;
+      case {'bovw'} % ## CV PROJ type - bag of words
+        opts.numWords = 1024 ; % ## CV PROJ - did Gabe say the size 1024?
       case {'fv'}
         opts.numWords = 64 ;
         opts.numPcaDimensions = 80 ;

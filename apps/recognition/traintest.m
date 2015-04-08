@@ -14,7 +14,7 @@ opts.encoderParams = {'type', 'bovw'} ;
 opts.seed = 1 ; % does this seed a prng?
 opts.lite = true ;
 opts.C = 1 ;
-opts.kernel = 'linear' ;
+opts.kernel = 'linear' ; % should it be always linear? or can be one of linear/hell/chi12
 opts.dataDir = 'data'; 
 for pass = 1:2
   opts.datasetDir = fullfile(opts.dataDir, opts.dataset) ;
@@ -27,7 +27,7 @@ for pass = 1:2
   opts = vl_argparse(opts,varargin) ;
 end
 
-% do not do anything if the result data already exist
+% do not do anything if the result data already exist  ## CV we might change this to empty previous data (or not)
 if exist(fullfile(opts.resultDir,'result.mat')),
   load(fullfile(opts.resultDir,'result.mat'), 'ap', 'confusion') ;
   fprintf('%35s mAP = %04.1f, mean acc = %04.1f\n', opts.prefix, ...
@@ -53,7 +53,9 @@ else
    case 'caltech256', imdb = setupCaltech256(opts.datasetDir, 'lite', opts.lite) ;
    case 'voc07', imdb = setupVoc(opts.datasetDir, 'lite', opts.lite, 'edition', '2007') ;
    case 'fmd', imdb = setupFMD(opts.datasetDir, 'lite', opts.lite) 
-       % ## CV PROJ add a case for KITTI?
+       % ## CV PROJ add a case for KITTI? --> or we can use setupGeneric()
+       % case 'kitti', imdb = setupKitti(opts.datasetDir, 'lite', opts.lite); 
+
    otherwise, error('Unknown dataset type.') ;
  end
  save(opts.imdbPath, '-struct', 'imdb') ;
@@ -66,7 +68,7 @@ end
 if exist(opts.encoderPath)
   encoder = load(opts.encoderPath) ;
 else
-  numTrain = 5000 ;
+  numTrain = 5000 ; % ## CV PROJ we might change this number
   if opts.lite, numTrain = 10 ; end
   train = vl_colsubset(find(imdb.images.set <= 2), numTrain, 'uniform') ;
   encoder = trainEncoder(fullfile(imdb.imageDir,imdb.images.name(train)), ...
@@ -144,6 +146,7 @@ diary off ;
 diary on ;
 
 % confusion matrix (can be computed only if each image has only one label)
+
 if isfield(imdb.images, 'class')
   [~,preds] = max(scores, [], 1) ;
   confusion = zeros(numClasses) ;

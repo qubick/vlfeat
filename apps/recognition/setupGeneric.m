@@ -85,7 +85,7 @@ names = {} ;
 classes = {} ;
 for c = 1:numel(imdb.meta.classes)
   class = imdb.meta.classes{c} ;
-  tmp = dir(fullfile(datasetDir, [class filesep '*.jpg'])) ;
+  tmp = dir(fullfile(datasetDir, [class filesep '*.png'])) ; % ## CV PROJ changed to kitti data format
   names{c} = strcat([class filesep], {tmp.name}) ;
   classes{c} = repmat(c, 1, numel(names{c})) ;
 end
@@ -113,7 +113,7 @@ for c = 1:numClasses
 end
 
 ok = find(sets ~= 0) ;
-imdb.images.id = ids(ok) ;
+imdb.images.id = ids(ok) ; % ## CV PROJ should this be labels that we get from kitti data set?
 imdb.images.name = names(ok) ;
 imdb.images.set = sets(ok) ;
 imdb.images.class = classes(ok) ;

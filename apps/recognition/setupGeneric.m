@@ -76,10 +76,10 @@ opts = vl_argparse(opts, varargin) ;
 
 % Construct image database imdb structure
 imdb.meta.sets = {'train', 'val', 'test'} ;
-names = dir(datasetDir) ;
+names = dir(datasetDir) ; ## CV PROJ We don't seem to get image file name, or it should be labels rather than name
 names = {names([names.isdir]).name} ;
 names = setdiff(names, {'.', '..'}) ;
-imdb.meta.classes = names ;
+imdb.meta.classes = names ; ## CV PROJ  to classify images by nmae here
 
 names = {} ;
 classes = {} ;
@@ -113,7 +113,7 @@ for c = 1:numClasses
 end
 
 ok = find(sets ~= 0) ;
-imdb.images.id = ids(ok) ; % ## CV PROJ should this be labels that we get from kitti data set?
+imdb.images.id = ids(ok) ; 
 imdb.images.name = names(ok) ;
 imdb.images.set = sets(ok) ;
 imdb.images.class = classes(ok) ;

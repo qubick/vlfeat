@@ -76,10 +76,10 @@ opts = vl_argparse(opts, varargin) ;
 
 % Construct image database imdb structure
 imdb.meta.sets = {'train', 'val', 'test'} ;
-names = dir(datasetDir) ; ## CV PROJ We don't seem to get image file name, or it should be labels rather than name
+names = dir(datasetDir) ; %## CV PROJ We don't seem to get image file name, or it should be labels rather than name
 names = {names([names.isdir]).name} ;
 names = setdiff(names, {'.', '..'}) ;
-imdb.meta.classes = names ; ## CV PROJ  to classify images by nmae here
+imdb.meta.classes = names ; %## CV PROJ  to classify images by nmae here
 
 names = {} ;
 classes = {} ;
@@ -113,8 +113,8 @@ for c = 1:numClasses
 end
 
 ok = find(sets ~= 0) ;
-imdb.images.id = ids(ok) ; 
-imdb.images.name = names(ok) ;
+imdb.images.id = ids(ok) ; % lables
+imdb.images.name = names(ok) ; % image name
 imdb.images.set = sets(ok) ;
 imdb.images.class = classes(ok) ;
 imdb.imageDir = datasetDir ;

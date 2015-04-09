@@ -108,7 +108,7 @@ end
 descrs = bsxfun(@times, descrs, 1./sqrt(sum(descrs.^2))) ;
 
 % train and test
-train = find(imdb.images.set <= 2) ;
+train = find(imdb.images.set <= 2) ; % selTrain or selVal
 test = find(imdb.images.set == 3) ;
 lambda = 1 / (opts.C*numel(train)) ;
 par = {'Solver', 'sdca', 'Verbose', ...
@@ -134,9 +134,10 @@ for c = 1:numel(classRange)
   [w{c},b{c}] = vl_svmtrain(descrs(:,train), y(train), lambda, par{:}) ;
   scores{c} = w{c}' * descrs + b{c} ;
 
-  [~,~,info] = vl_pr(y(test), scores{c}(test)) ;
-  ap(c) = info.ap ;
-  ap11(c) = info.ap_interp_11 ;
+  %[precision, recall, info] = vl_pr()
+  [~,~,info] = vl_pr(y(test), scores{c}(test)) ; %CV PROJ precision-recall
+  ap(c) = info.ap ; %average precision
+  ap11(c) = info.ap_interp_11 ; 
   fprintf('class %s AP %.2f; AP 11 %.2f\n', imdb.meta.classes{classRange(c)}, ...
           ap(c) * 100, ap11(c)*100) ;
 end
